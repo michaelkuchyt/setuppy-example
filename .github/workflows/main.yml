@@ -11,4 +11,11 @@ jobs:
         COMMAND: "python setup.py install"
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-        args: --file=setup.py
+        args: --file=setup.py --json > results.json
+      name: Convert Snyk Results to html
+        run: snyk-to-html -i results.json -o results.html
+      name: Upload Snyk Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: snyk-results
+          path: results.html
