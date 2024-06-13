@@ -12,7 +12,11 @@ jobs:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         args: --file=setup.py --json > results.json
-      name: Convert Snyk Results to html
+      # Install dependecies for snyk report
+      - name: Install dependecies for snyk report
+        run:  |
+          npm install snyk-to-html -g
+        name: Convert Snyk Results to html
         run: snyk-to-html -i results.json -o results.html
       name: Upload Snyk Test Results
         uses: actions/upload-artifact@v2
